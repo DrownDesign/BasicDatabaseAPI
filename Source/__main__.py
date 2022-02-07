@@ -7,7 +7,6 @@ def main():
     print("------- Basic Database API -------")
 
     loadFile()
-    
 
 def loadFile():
     while True:
@@ -27,8 +26,17 @@ def loadFile():
 
             if command.lower() == 'help':
                 #Print options and what they do
-                print('\nAdd == Add an entry to the current database\n')
+                print('\nDisplay == Change the current display format (Current options are Text and JSON\n)')
+                print('Add == Add an entry to the current database\n')
                 print('Filter == Search the database for entries containing specific data\n')
+                print('Export == Export the database to a specified format and directory (Current options are CSV and JSON\n)')
+            if command.lower() == 'display':
+                new_format = input("New format (Text, JSON): ")
+                if new_format.lower() != 'text' and new_format.lower() != 'json':
+                    print('Format specified not supported. Please specify CSV or JSON.')
+                else:
+                    active_database.display_format = new_format
+                active_database.display_database(active_database.entries)
             if command.lower() == 'add':
                 name = input("Name: ")
                 address = input("Address: ")

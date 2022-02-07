@@ -4,8 +4,10 @@ class database:
         print("Creating new database...")
         
         self.entries = []
+        self.display_format = "text"
 
         file_array = file.read().split("\n")
+            
 
         index = 0
         for line in file_array:
@@ -19,9 +21,20 @@ class database:
             index+=1
 
     def display_database(self, data):
-        print("Name, Address, Number\n")
-        for x in data:
-            print(x)
+        if self.display_format.lower() == "text":
+            print("\nName, Address, Number\n")
+            for x in data:
+                print(x)
+        elif self.display_format.lower() == "json":
+            print('{\n "Database": [\n')
+            index = 0
+            for entry in data:
+                print('{\n' + f'"name": "{entry.name}",\n "address": "{entry.address}",\n "number": "{entry.number}"\n' + "}")
+                if index < len(data) - 1:
+                    print(",\n")
+                else:
+                    print('\n]\n}')
+                index+=1
 
     def add_entry(self, name, address, number):
         new_entry = entry(name, address, number)
@@ -36,7 +49,7 @@ class database:
                 data.append(current_entry)
             elif category.lower() == 'number' and search.lower() in current_entry.number.lower():
                 data.append(current_entry)
-                
+        print(len(data))
         return data
 
     def export(self, format, filepath):
@@ -48,9 +61,14 @@ class database:
                 file.write(f"{entry.name},{entry.address},{entry.number}\n")
         elif format.lower() == 'json':
             file.write('{\n "Database":[\n')
+            index = 0
             for entry in self.entries:
-                file.write('{\n' + f'"name": "{entry.name}",\n "address": "{entry.address}",\n "number": "{entry.number}"\n' + "},\n")
-            file.write('}')
+                file.write('{\n' + f'"name": "{entry.name}",\n "address": "{entry.address}",\n "number": "{entry.number}"\n' + "}")
+                if index < len(self.entries) - 1:
+                    file.write(",\n")
+                else:
+                    file.write('\n]\n}')
+                index+=1
         else:
             print('Format not supported')
         file.close()
