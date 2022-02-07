@@ -1,6 +1,6 @@
 # BasicDatabaseAPI
 ## System Overview
-This basic database API allows users to take a set of personal data in csv format, with each element containing a name, address, and phone number, and run certain tasks. Currently, a user can display the information in text and JSON formatting, filter the database by category and key, and export the database to CSV, or JSON. All information and controls can be run in console through the provided DataAPI.bat.
+This basic database API allows users to take a set of personal data in CSV format, with each element containing a name, address, and phone number, and run certain tasks. Currently, a user can display the information in text and JSON formatting, filter the database by category and key, and export the database to CSV, or JSON. All information and controls can be run in console through the provided DataAPI.bat.
 
 ## Setup
 1. Edit the "DataAPI.bat" and specify the python directory, and the directory to the __main__.py file.

@@ -7,19 +7,18 @@ class database:
         self.display_format = "text"
 
         file_array = file.read().split("\n")
-            
 
-        index = 0
         for line in file_array:
-            #Skip first line of database containing categories rather than entries
-            if index is not 0:
-                line = line.split(",")
-                if len(line) > 2:
-                    current_entry = entry(line[0],line[1],line[2])
-                    self.entries.append(current_entry)
-                
-            index+=1
+            #Skip category names
+            if 'name' in line.lower():
+                continue
 
+            line = line.split(",")
+            if len(line) > 2:
+                current_entry = entry(line[0],line[1],line[2])
+                self.entries.append(current_entry)
+
+    #Display's the database based on incoming data, and the current state of the Display_Format variable
     def display_database(self, data):
         if self.display_format.lower() == "text":
             print("\nName, Address, Number\n")
@@ -36,10 +35,12 @@ class database:
                     print('\n]\n}')
                 index+=1
 
+    #Adds a new entry to the database
     def add_entry(self, name, address, number):
         new_entry = entry(name, address, number)
         self.entries.append(new_entry)
 
+    #Filters the database based on a category and key
     def filter(self, category, search):
         data = []
         for current_entry in self.entries:
@@ -52,6 +53,7 @@ class database:
         print(len(data))
         return data
 
+    #Exports the file in a user specified file format and filepath
     def export(self, format, filepath):
         file = open(filepath, "w")
 
@@ -73,12 +75,15 @@ class database:
             print('Format not supported')
         file.close()
         
+#Class for defining on person in the entry.
 class entry:
 
+    #To extend the entries in the database, add variables here.
     def __init__(self,name,address,number):
         self.name = name
         self.address = address
         self.number = number
 
+    #Defines how an entry is printed
     def __str__(self):
         return str(f"{self.name}, {self.address}, {self.number}")
