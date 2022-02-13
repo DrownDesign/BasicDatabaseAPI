@@ -1,39 +1,25 @@
 class database:
     
-    def __init__(self, file):
+    def __init__(self, file, format):
         print("Creating new database...")
         
         self.entries = []
-        self.display_format = "text"
 
-        file_array = file.read().split("\n")
+        file_array = []
+
+        #Try to build the database based on the current format
+        try:
+            file_array = format.build_database(file)
+        except:
+            print(f"Error trying to build database {format}")
 
         for line in file_array:
-            #Skip category names
-            if 'name' in line.lower():
-                continue
-
-            line = line.split(",")
             if len(line) > 2:
                 current_entry = entry(line[0],line[1],line[2])
                 self.entries.append(current_entry)
 
-    #Display's the database based on incoming data, and the current state of the Display_Format variable
-    def display_database(self, data):
-        if self.display_format.lower() == "text":
-            print("\nName, Address, Number\n")
-            for x in data:
-                print(x)
-        elif self.display_format.lower() == "json":
-            print('{\n "Database": [\n')
-            index = 0
-            for entry in data:
-                print('{\n' + f'"name": "{entry.name}",\n "address": "{entry.address}",\n "number": "{entry.number}"\n' + "}")
-                if index < len(data) - 1:
-                    print(",\n")
-                else:
-                    print('\n]\n}')
-                index+=1
+    def get_entries(self):
+        return self.entries
 
     #Adds a new entry to the database
     def add_entry(self, name, address, number):
@@ -52,28 +38,6 @@ class database:
                 data.append(current_entry)
         print(len(data))
         return data
-
-    #Exports the file in a user specified file format and filepath
-    def export(self, format, filepath):
-        file = open(filepath, "w")
-
-        if format.lower() == 'csv':
-            file.write("Name,Address,Number\n")
-            for entry in self.entries:
-                file.write(f"{entry.name},{entry.address},{entry.number}\n")
-        elif format.lower() == 'json':
-            file.write('{\n "Database":[\n')
-            index = 0
-            for entry in self.entries:
-                file.write('{\n' + f'"name": "{entry.name}",\n "address": "{entry.address}",\n "number": "{entry.number}"\n' + "}")
-                if index < len(self.entries) - 1:
-                    file.write(",\n")
-                else:
-                    file.write('\n]\n}')
-                index+=1
-        else:
-            print('Format not supported')
-        file.close()
         
 #Class for defining on person in the entry.
 class entry:
